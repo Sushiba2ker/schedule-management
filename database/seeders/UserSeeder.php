@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class UserSeeder extends Seeder
 {
@@ -14,50 +15,77 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Lấy role IDs
+        $now = Carbon::now();
+        
+        // Lấy IDs của các roles
         $adminRoleId = DB::table('roles')->where('slug', 'admin')->first()->id;
         $teacherRoleId = DB::table('roles')->where('slug', 'teacher')->first()->id;
         $departmentHeadRoleId = DB::table('roles')->where('slug', 'department_head')->first()->id;
         $secretaryRoleId = DB::table('roles')->where('slug', 'secretary')->first()->id;
-
-        // Tạo tài khoản Admin
+        
+        // Tạo Admin
         DB::table('users')->insert([
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' => Hash::make('password'),
             'role_id' => $adminRoleId,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
-
-        // Tạo tài khoản Giảng viên
+        
+        // Tạo Trưởng bộ môn
         DB::table('users')->insert([
-            'name' => 'Nguyễn Văn A',
-            'email' => 'teacher1@example.com',
-            'password' => Hash::make('password'),
-            'role_id' => $teacherRoleId,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        // Tạo tài khoản Trưởng bộ môn
-        DB::table('users')->insert([
-            'name' => 'Trần Thị B',
-            'email' => 'head1@example.com',
+            'name' => 'Trần Văn A',
+            'email' => 'head@example.com',
             'password' => Hash::make('password'),
             'role_id' => $departmentHeadRoleId,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
-
-        // Tạo tài khoản Thư ký
+        
+        // Tạo Thư ký
         DB::table('users')->insert([
-            'name' => 'Lê Văn C',
-            'email' => 'secretary1@example.com',
+            'name' => 'Nguyễn Thị B',
+            'email' => 'secretary@example.com',
             'password' => Hash::make('password'),
             'role_id' => $secretaryRoleId,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
+        
+        // Tạo các giảng viên
+        $teachers = [
+            [
+                'name' => 'Lê Văn C',
+                'email' => 'teacher1@example.com',
+            ],
+            [
+                'name' => 'Phạm Thị D',
+                'email' => 'teacher2@example.com',
+            ],
+            [
+                'name' => 'Hoàng Văn E',
+                'email' => 'teacher3@example.com',
+            ],
+            [
+                'name' => 'Trần Thị F',
+                'email' => 'teacher4@example.com',
+            ],
+            [
+                'name' => 'Nguyễn Văn G',
+                'email' => 'teacher5@example.com',
+            ],
+        ];
+        
+        foreach ($teachers as $teacher) {
+            DB::table('users')->insert([
+                'name' => $teacher['name'],
+                'email' => $teacher['email'],
+                'password' => Hash::make('password'),
+                'role_id' => $teacherRoleId,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ]);
+        }
     }
 }
